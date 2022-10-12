@@ -21,3 +21,4 @@ server-->browser: [{content: "dfgdfgdfg", date: "2022-10-12T04:13:57.431Z"}, ...
 browser->server: GET https://studies.cs.helsinki.fi/exampleapp/favicon.ico
 server-->browser: html code
 
+

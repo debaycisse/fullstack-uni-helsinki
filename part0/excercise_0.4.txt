@@ -28,3 +28,5 @@ server-->browser: [..., {content: "test item creation", date: "2022-10-12T11:24:
 
 browser->server: GET https://studies.cs.helsinki.fi/exampleapp/favicon.ico
 server-->browser: html code
+
+
