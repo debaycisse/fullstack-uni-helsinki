@@ -1,15 +1,35 @@
 import { useState } from 'react';
 
+const Title = (props) => {
+  const {text} = props
+  return (
+    <div>
+      <h1>{text}</h1>
+    </div>
+  )
+}
+
 const Button = (props) => {
   return (
     <button onClick={props.onClick}>{props.text}</button>
   )
 }
 
-const anecdoteWithHighestVotes = (props) => {
-  const [points, anecdotes] = props
-  const maxAnecdoteValue = Math.max.apply(Math, points)
-  const maxAnecdoteId = points.indexOf(maxAnecdoteValue)
+const AnecdoteOfTheDay = (props) => {
+  const {anecdotes, points, selected} = props
+
+  return (
+    <p>
+      {anecdotes[selected]} <br />has {points[selected]} vote(s).<br />
+    </p>
+  )
+}
+
+const AnecdoteWithHighestVotes = (props) => {
+  const {points, anecdotes} = props
+
+  const maxAnecdotePoint = Math.max.apply(Math, points)
+  const maxAnecdoteId = points.indexOf(maxAnecdotePoint)
 
   return (
     <p>{anecdotes[maxAnecdoteId]} <br />has {points[maxAnecdoteId]} vote(s).</p>
@@ -47,11 +67,14 @@ const App = () => {
 
   return (
     <div>
-      {anecdotes[selected]} <br />has {points[selected]} vote(s).
-      <br />
+      <Title text='Anecdote of the day' />
+      <AnecdoteOfTheDay anecdotes={anecdotes} points={points} selected={selected} />
+
       <Button text='Vote' onClick={addVote} /> 
       <Button text='Next Anecdote' onClick={selectAnecdotes} />
-      <anecdoteWithHighestVotes points={points} anecdotes={anecdotes} />
+      
+      <Title text='Anecdote with most votes' />
+      <AnecdoteWithHighestVotes points={points} anecdotes={anecdotes} />
     </div>
   )
 }
