@@ -1,8 +1,6 @@
 const Header = ({course}) => {
   return (
-    <div>
       <h1>{course.name}</h1>
-    </div>
   )
 }
 
@@ -18,7 +16,7 @@ const Content = ({course}) => {
   
   return (
       <ul>
-        {course.parts.map(part => <Part key={part.id} part={part} />)}
+        {course.parts.map((part, id) => <Part key={id} part={part} />)}
       </ul>
   )
 }
