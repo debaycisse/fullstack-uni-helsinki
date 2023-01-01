@@ -1,5 +1,7 @@
 ```
 sequenceDiagram
+
+title: A scenerio where the user creates a new note on page https://studies.cs.helsinki.fi/exampleapp/notes - part 0.4
 browser->>server: POST https://studies.cs.helsinki.fi/exampleapp/new_note
 Note left of server: after posting was done here, the server redirects browser to  https://studies.cs.helsinki.fi/exampleapp/note
 
@@ -26,6 +28,8 @@ server->>browser: html code
 
 ```mermaid
 sequenceDiagram
+
+title: A scenerio where the user creates a new note on page https://studies.cs.helsinki.fi/exampleapp/notes - part 0.4
 browser->>server: POST https://studies.cs.helsinki.fi/exampleapp/new_note
 Note left of server: after posting was done here, the server redirects browser to  https://studies.cs.helsinki.fi/exampleapp/note
 
