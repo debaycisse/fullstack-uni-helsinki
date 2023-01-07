@@ -1,4 +1,7 @@
 import { useState } from "react"
+import PersonForm from "./components/PersonForm"
+import FilterContact from "./components/FilterContact"
+import Persons from "./components/Persons"
 
 const App = () => {
   const allPersons = [
@@ -7,9 +10,11 @@ const App = () => {
     { name: 'Dan Abramov', phoneNumber: '12-43-234345', id: 3 },
     { name: 'Mary Poppendieck', phoneNumber: '39-23-6423122', id: 4 }
   ]
+
   const [persons, setPersons] = useState(allPersons) 
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
+
 
   const addName = (event) =>{
     event.preventDefault()
@@ -19,7 +24,9 @@ const App = () => {
     }
     else{
       const newNameObject = {
-        name: newName, phoneNumber: newNumber
+        name: newName, 
+        phoneNumber: newNumber,
+        id: persons.length + 1 
       }
       setPersons(persons.concat(newNameObject))
       setNewName('')
@@ -27,9 +34,12 @@ const App = () => {
     }
   }
 
+
   const handleChangeName = (event) => {
     setNewName(event.target.value)
   }
+
+
   const handleChangeNumber = (event) => {
     setNewNumber(event.target.value)
   }
@@ -46,24 +56,23 @@ const App = () => {
     }
   }
 
+  
   return (
     <div>
       <h2>Phonebook</h2>
-      filter shown with <input onChange={filterContact} />
+      <FilterContact filterContact={filterContact} />
+
       <h2>Add a new contact</h2>
-      <form onSubmit={addName}>
-        <div>
-          name: <input value={newName} onChange={handleChangeName} />
-          number: <input value={newNumber} onChange={handleChangeNumber} />
-        </div>
-        <div>
-          <button type="submit">add</button>
-        </div>
-      </form>
+      <PersonForm 
+        addName={addName} 
+        newName={newName}
+        handleChangeName={handleChangeName}
+        newNumber={newNumber}
+        handleChangeNumber={handleChangeNumber}
+      />
+
       <h2>Contacts</h2>
-      <div>
-        {persons.map((person) => <li key={person.name}>{person.name} {person.phoneNumber}</li>)}
-      </div>
+      <Persons members={persons} />
     </div>
   )
 }
