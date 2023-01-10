@@ -50,7 +50,7 @@ const App = () => {
                         <li key={id}>{value}</li>
                     ))}
                 </ul>
-                <img src={country.flags.png} />
+                <img src={country.flags.png} alt="country's flag" />
             </div>
         );
     }
