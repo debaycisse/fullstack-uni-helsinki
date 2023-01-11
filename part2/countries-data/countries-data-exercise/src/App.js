@@ -1,13 +1,16 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import DisplayCountries from "./components/DisplayCountries";
+import DisplayCountryDetails from "./components/DisplayCountryDetails";
 
 const App = () => {
     const [searchKeywords, setSearchKeywords] = useState("");
     const [countriesData, setCountriesData] = useState([]);
     const [searchResults, setSearchResults] = useState([]);
-
-    let displayContents;
-
+    
+    let displayContents = '';
+    
+    
     useEffect(() => {
         axios
             .get("https://restcountries.com/v3.1/all")
@@ -16,50 +19,68 @@ const App = () => {
             });
     }, []);
 
+
+    
+    
     const handleKeywordChange = (event) => {
+
         setSearchKeywords(event.target.value);
 
         const result = countriesData.filter((country) =>
-            country.name.common.toLowerCase().includes(searchKeywords.toLowerCase())
+            country.name.common.toLowerCase().includes(event.target.value.toLowerCase())
         );
 
-        const result_names = result.map((country) => country.name.common);
+        const resultNames = result.map((country) => country.name.common);
 
-        setSearchResults(result_names);
+        // setSearchResults(result_names);
+        // console.log('result names: ', resultNames)
+        
+        setSearchResults(resultNames);
+        
     };
+    
+    
+        // Obtaining value for displayContent
+        if(searchResults.length === 0){
+            // setContents('')
+            displayContents = ''
+        } else if (searchResults.length > 10) {
+            
+            // setContents(<p>Too many matches, specify another filter.</p>);
+            
+            displayContents = <p>Too many matches, specify another filter.</p>;
+            
+        } else if (searchResults.length <= 10 && searchResults.length > 1) {
+                            
+            // setContents(<DisplayCountries searchResults={searchResults} countriesData={countriesData} />)
+            
+            displayContents = <DisplayCountries searchResults={searchResults} countriesData={countriesData} />
+            
+        } else if (searchResults.length === 1) {
+            
+            // setContents(<DisplayCountryDetails countriesData={countriesData} aCountry={searchResults} />)
+            
+            displayContents = <DisplayCountryDetails countriesData={countriesData} aCountry={searchResults} />
+            
+        }
+        
+    
+    
+    
 
-    if (searchResults.length > 10) {
-        displayContents = <p>Too many matches, specify another filter.</p>;
-    } else if (searchResults.length <= 10 && searchResults.length > 1) {
-        displayContents = searchResults.map((country, id) => (
-            <p key={id}> {country} </p>
-        ));
-    } else if (searchResults.length === 1) {
-        const country = countriesData.find((country) =>
-            country.name.common.includes(searchResults)
-        );
+    // setContents(displayContents)
+    // console.log('search results', searchResults)
+    console.log('displayContents', displayContents)
 
-        displayContents = (
-            <div>
-                <h1>{country.name.common}</h1>
-                <p>Capital {country.capital[0]}</p>
-                <p>Area {country.area}</p>
-                <b>Languages</b>
-                <ul>
-                    {Object.values(country.languages).map((value, id) => (
-                        <li key={id}>{value}</li>
-                    ))}
-                </ul>
-                <img src={country.flags.png} alt="country's flag" />
-            </div>
-        );
-    }
+    const [contents, setContents] = useState(displayContents);
+    
 
     return (
         <div>
             Find Countries{" "}
             <input value={searchKeywords} onChange={handleKeywordChange} />
-            <>{displayContents}</>
+            
+            {contents}
         </div>
     );
 };
