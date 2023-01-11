@@ -1,6 +1,6 @@
 const DisplayCountryDetails = (props) => {
     
-    const {countriesData, searchResults, aCountry} = props
+    const {countriesData, aCountry} = props
 
     const countryData = countriesData.find((country) =>
         country.name.common.includes(aCountry)
