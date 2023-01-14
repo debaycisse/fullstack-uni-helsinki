@@ -12,8 +12,13 @@ const create = (newPersonObject) => {
     return request.then(response => response.data)
 }
 
+const deletePerson = (id) => {
+    const request = axios.delete(`${dbBaseUrl}/${id}`)
+    return request.then(response => response.status)    // should return 200 if successful. I used this to know whenver something breaks here
+}
 
 export default {
     getAll: getAll,
-    create: create
+    create: create,
+    deletePerson: deletePerson
 }

@@ -53,6 +53,24 @@ const App = () => {
   }
 
 
+  const deletePerson = (event) => {
+
+    const personName = event.target.value;
+    const personID = event.target.id;
+
+    if(window.confirm(`Do you want to delete ${personName}`)){
+      personService
+        .deletePerson(personID)
+        .then(statusCode => {
+            if(statusCode === 200){
+              setPersons(persons.filter(person => person.name !== personName))
+            }
+          }
+          )
+        }
+  }
+
+
   const handleChangeName = (event) => {
     setNewName(event.target.value)
   }
@@ -90,7 +108,7 @@ const App = () => {
       />
 
       <h2>Contacts</h2>
-      <Persons members={contents} />
+      <Persons members={contents} deletePerson={deletePerson} />
     </div>
   )
 }
