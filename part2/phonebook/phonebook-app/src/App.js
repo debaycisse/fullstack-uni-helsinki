@@ -2,32 +2,26 @@ import { useState, useEffect } from "react"
 import PersonForm from "./components/PersonForm"
 import FilterContact from "./components/FilterContact"
 import Persons from "./components/Persons"
-import axios from "axios"
+import personService from "./services/persons"
 
 const App = () => {
-  // const allPersons = [
-  //   { name: 'Arto Hellas', phoneNumber: '040-123456', id: 1 },
-  //   { name: 'Ada Lovelace', phoneNumber: '39-44-5323523', id: 2 },
-  //   { name: 'Dan Abramov', phoneNumber: '12-43-234345', id: 3 },
-  //   { name: 'Mary Poppendieck', phoneNumber: '39-23-6423122', id: 4 }
-  // ]
 
   const [persons, setPersons] = useState([]) 
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [contents, setContents] = useState([])
 
-  const baseUrl = 'http://localhost:3001/persons'
-
   
   useEffect(() =>{
-    axios
-      .get(baseUrl)
-      .then(response => {
-          setPersons(response.data)
-          setContents(response.data)
-      })
-  },
+      personService
+        .getAll()
+        .then(existingData => {
+            setPersons(existingData)
+            setContents(existingData)
+          }
+      )
+    }
+  ,
   []);
 
   useEffect(() => setContents(persons), [persons])
@@ -42,21 +36,20 @@ const App = () => {
       const newPersonObject = {
         name: newName, 
         number: newNumber,
-        // id: persons.length + 1 
       }
 
-      axios
-        .post(baseUrl, newPersonObject)
-        .then(response => {
-              setPersons(persons.concat(response.data))
-              setNewName('')
-              setNewNumber('')
-            }
+      personService
+        .create(newPersonObject)
+        .then(returnedObject => {
+            setPersons(persons.concat(returnedObject))
+            setNewName('')
+            setNewNumber('')
+          }
         )
-        .catch(error => console.log('Could not save data to db '))
+        .catch(error => console.log('Server could not save the new person data to the DB'))
         
     }
-    
+
   }
 
 
@@ -71,16 +64,12 @@ const App = () => {
 
 
   const filterContact = (event) => {
-    // console.log('filter contact length : ', event.target.value.length)
     if (event.target.value.length === 0){
       setContents(persons)
-      // console.log(contents)
-      // setPersons(persons)
     }else{
       const filtered = persons.filter(person =>
         person.name.toLowerCase().includes(event.target.value.toLowerCase())
       )
-      // setContents(persons)
       setContents(filtered)
     }
   }
