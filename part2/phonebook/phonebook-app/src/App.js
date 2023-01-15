@@ -3,6 +3,7 @@ import PersonForm from "./components/PersonForm"
 import FilterContact from "./components/FilterContact"
 import Persons from "./components/Persons"
 import personService from "./services/persons"
+import SuccessNotification from "./components/SuccessNotification"
 
 const App = () => {
 
@@ -10,6 +11,8 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [contents, setContents] = useState([])
+  const [notification, setNotification] = useState(null)
+  const [updatedNotification, setUpdatedNotification] = useState(null)
 
   
   useEffect(() =>{
@@ -42,6 +45,8 @@ const App = () => {
             setPersons(persons.map(person => person.name !== selectedPerson.name? person : returnedUpdatedPersonObj))
             setNewName('')
             setNewNumber('')
+            setUpdatedNotification(updatedPersonObject.name)
+            setTimeout(() => setUpdatedNotification(null), 5000)
           })
       }
     }
@@ -60,6 +65,8 @@ const App = () => {
             setPersons(persons.concat(returnedObject))
             setNewName('')
             setNewNumber('')
+            setNotification(newPersonObject.name)
+            setTimeout(() => setNotification(null), 5000)
           }
         )
         .catch(error => console.log('Server could not save the new person data to the DB'))
@@ -112,6 +119,8 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <SuccessNotification objectProperty={notification} message={' added successfully'} />
+      <SuccessNotification objectProperty={updatedNotification} message={' updated successfully'} />
       <FilterContact filterContact={filterContact} />
 
       <h2>Add a new contact</h2>
