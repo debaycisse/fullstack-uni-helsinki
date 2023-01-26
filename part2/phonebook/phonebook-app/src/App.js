@@ -109,9 +109,7 @@ const App = () => {
       personService
         .deletePerson(personID)
         .then(statusCode => {
-            if(statusCode === 200){
               setPersons(persons.filter(person => person.name !== personName))
-            }
           }
           )
         }
